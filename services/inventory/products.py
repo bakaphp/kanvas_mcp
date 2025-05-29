@@ -1,0 +1,50 @@
+from email import header
+import requests
+import json
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+def search_products(name: str) -> str:
+    print(f"Searching for products with name: {name}")
+    graphql_query = """
+    query {
+      products(
+      orderBy: [
+            {
+                column: ID,
+                order: DESC
+            }
+        ]
+      first: 2
+    ) {
+        data {
+            id
+            name
+            description
+        }
+      }
+    }
+    """
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {os.getenv('KANVAS_AUTH_TOKEN')}",
+        "X-Kanvas-App": os.getenv("KANVAS_APP_ID"),
+        "X-Kanvas-Location": os.getenv("KANVAS_LOCATION"),  # Still valid if needed
+    }
+
+    payload = {
+        "query": graphql_query,
+        # "variables": {"name": name}
+    }
+
+    response = requests.post(os.getenv("KANVAS_API_URL"), json=payload, headers=headers)
+
+    data = response.json()
+    # You could return filtered data, or raw depending on your needs:
+    return json.dumps(
+        {"products": data.get("data", {}).get("products", {}).get("data", [])}
+    )

@@ -1,0 +1,35 @@
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# pipenv and poetry
+Pipfile.lock
+poetry.lock
+
+# virtual environments
+venv/
+env/
+ENV/
+.venv/
+.python-version
+
+# pytest
+.cache/
+
+# coverage reports
+.coverage.*
+*.cover
+coverage.xml
+
+# Sphinx documentation
+docs/_build/
+
+# PyInstaller
+*.spec
+
+# Cython build
+cython_debug/
+
+.env
+
+__pycache__/
+*.pyc
