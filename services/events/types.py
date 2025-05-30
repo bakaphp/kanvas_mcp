@@ -28,6 +28,7 @@ def get_types() -> str:
 
     response = RequestsUtil.post(payload)
     data = response.json()
+
     # You could return filtered data, or raw depending on your needs:
     return json.dumps(
         {"types": data.get("data", {}).get("eventTypes", {}).get("data", [])}

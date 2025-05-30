@@ -3,6 +3,8 @@ import json
 import os
 from dotenv import load_dotenv
 
+from util.requests import RequestsUtil
+
 load_dotenv()
 
 
@@ -16,34 +18,35 @@ def create_event(
     end_time: str,
 ) -> str:
     graphql_query = """
-    mutation CreateEvent {
-    createEvent(
+    mutation CreateEvent(
+      $name: String!,
+      $description: String!,
+      $category_id: ID!,
+      $type_id: ID!,
+      $date: Date!,
+      $start_time: String!,
+      $end_time: String!
+    ) {
+      createEvent(
         input: {
-            name: ${name}
-            description: ${description}
-            category_id: ${category_id}
-            type_id: ${type_id}
-            dates: [
-                {
-                    date: ${date}
-                    start_time: ${start_time}
-                    end_time: ${end_time}
-                }
-            ]
+          name: $name,
+          description: $description,
+          category_id: $category_id,
+          type_id: $type_id,
+          dates: [
+            {
+              date: $date,
+              start_time: $start_time,
+              end_time: $end_time
+            }
+          ]
         }
-    ){
+      ) {
         id
         name
-        }
+      }
     }
     """
-
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {os.getenv('KANVAS_AUTH_TOKEN')}",
-        "X-Kanvas-App": os.getenv("KANVAS_APP_ID"),
-        "X-Kanvas-Location": os.getenv("KANVAS_LOCATION"),  # Still valid if needed
-    }
 
     payload = {
         "query": graphql_query,
@@ -58,12 +61,10 @@ def create_event(
         },
     }
 
-    response = requests.post(os.getenv("KANVAS_API_URL"), json=payload, headers=headers)
-
+    response = RequestsUtil.post(payload=payload)
     data = response.json()
-    # You could return filtered data, or raw depending on your needs:
     return json.dumps(
-        {"event": data.get("data", {}).get("products", {}).get("data", [])}
+        data
     )
 
 

@@ -1,5 +1,8 @@
 import requests
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class RequestsUtil(object):
@@ -8,7 +11,7 @@ class RequestsUtil(object):
     """
 
     @staticmethod
-    def post(payload: dict, headers: dict) -> requests.Response:
+    def post(payload: dict, headers: dict = None) -> requests.Response:
         """
         Make a POST request.
         """

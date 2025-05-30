@@ -3,6 +3,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+from util.requests import RequestsUtil
 
 load_dotenv()
 
@@ -29,22 +30,17 @@ def search_products(name: str) -> str:
     }
     """
 
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {os.getenv('KANVAS_AUTH_TOKEN')}",
-        "X-Kanvas-App": os.getenv("KANVAS_APP_ID"),
-        "X-Kanvas-Location": os.getenv("KANVAS_LOCATION"),  # Still valid if needed
-    }
-
     payload = {
         "query": graphql_query,
         # "variables": {"name": name}
     }
 
-    response = requests.post(os.getenv("KANVAS_API_URL"), json=payload, headers=headers)
+    response = RequestsUtil.post(payload)
+    data = response.text
 
-    data = response.json()
-    # You could return filtered data, or raw depending on your needs:
+    print(f"{data}")
+    exit()
+
     return json.dumps(
-        {"products": data.get("data", {}).get("products", {}).get("data", [])}
+        {"products": data}
     )
