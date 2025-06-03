@@ -25,6 +25,7 @@ pydantic_core==2.33.2
 Pygments==2.19.1
 python-dotenv==1.1.0
 python-multipart==0.0.20
+pytokens==0.1.10
 requests==2.32.3
 rich==14.0.0
 shellingham==1.5.4
