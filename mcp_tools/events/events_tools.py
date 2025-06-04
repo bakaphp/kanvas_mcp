@@ -13,16 +13,16 @@ def list_events() -> str:
 
 
 def get_types() -> str:
-    '''
+    """
     Get the list of the different types of events one can schudule/.
-    '''
+    """
     return get_types_tool()
 
 
 def get_categories() -> str:
-    '''
+    """
     Get a list of the available categories for events.
-    '''
+    """
     return get_categories_tool()
 
 
@@ -48,9 +48,9 @@ def create_event(
         ),
     ],
 ) -> str:
-    '''
+    """
     Creates an event from the information given.
-    '''
+    """
     return create_event_servive(
         name=name,
         description=description,

@@ -2,7 +2,7 @@ import os
 import asyncio
 from fastmcp import FastMCP, Context
 from dotenv import load_dotenv
-from starlette.middleware.cors import CORSMiddleware 
+from starlette.middleware.cors import CORSMiddleware
 
 
 load_dotenv()
@@ -11,6 +11,7 @@ load_dotenv()
 # The DeprecationWarning you see is about passing transport-specific settings
 # to the FastMCP constructor. Your current initialization is fine here.
 mcp = FastMCP("Kanvas MCP", description="Provides tools for event management.")
+
 
 # --- Define custom MCP tools ---
 @mcp.tool()
@@ -21,7 +22,7 @@ async def create_event(
     date: str,
     time: str,
     location: str,
-    ctx: Context
+    ctx: Context,
 ) -> str:
     """Creates a new event with the specified details.
 
@@ -38,9 +39,12 @@ async def create_event(
         str: A confirmation message or an error.
     """
     await ctx.info(f"Attempting to create event: {event_name}")
-    print(f"DEBUG: Creating Event: {event_name}, Type: {event_type}, Category: {category}, Date: {date}, Time: {time}, Location: {location}")
-    await asyncio.sleep(0.5) 
+    print(
+        f"DEBUG: Creating Event: {event_name}, Type: {event_type}, Category: {category}, Date: {date}, Time: {time}, Location: {location}"
+    )
+    await asyncio.sleep(0.5)
     return f"Event '{event_name}' of type '{event_type}' in category '{category}' at {location} on {date} {time} has been successfully created!"
+
 
 @mcp.tool()
 async def get_categories(ctx: Context) -> list[str]:
@@ -54,8 +58,9 @@ async def get_categories(ctx: Context) -> list[str]:
     """
     await ctx.info("Retrieving event categories...")
     print("DEBUG: Getting event categories")
-    await asyncio.sleep(0.2) # Simulate some processing time
+    await asyncio.sleep(0.2)  # Simulate some processing time
     return ["Music", "Sports", "Education", "Art", "Community"]
+
 
 @mcp.tool()
 async def get_types(ctx: Context) -> list[str]:
@@ -69,8 +74,9 @@ async def get_types(ctx: Context) -> list[str]:
     """
     await ctx.info("Retrieving event types...")
     print("DEBUG: Getting event types")
-    await asyncio.sleep(0.2) # Simulate some processing time
+    await asyncio.sleep(0.2)  # Simulate some processing time
     return ["Concert", "Workshop", "Seminar", "Exhibition", "Festival", "Meetup"]
+
 
 # --- Run the FastMCP server ---
 if __name__ == "__main__":
@@ -83,12 +89,12 @@ if __name__ == "__main__":
         "http://localhost",
         "http://127.0.0.1",
         "http://0.0.0.0",
-        "*" 
+        "*",
     ]
 
     # Attempt to add CORS middleware directly to the underlying ASGI app
 
-    if hasattr(mcp, 'app') and mcp.app is not None:
+    if hasattr(mcp, "app") and mcp.app is not None:
         mcp.app.add_middleware(
             CORSMiddleware,
             allow_origins=cors_origins_list,
@@ -96,18 +102,26 @@ if __name__ == "__main__":
             allow_methods=["*"],
             allow_headers=["*"],
         )
-        print(f"CORS middleware successfully configured for origins: {cors_origins_list}")
+        print(
+            f"CORS middleware successfully configured for origins: {cors_origins_list}"
+        )
     else:
-        print("Warning: Could not access `mcp.app` to apply CORS middleware directly. "
-              "CORS might not be configured as expected. Check FastMCP documentation for your version.")
+        print(
+            "Warning: Could not access `mcp.app` to apply CORS middleware directly. "
+            "CORS might not be configured as expected. Check FastMCP documentation for your version."
+        )
 
-    print(f"Starting Kanvas Custom MCP Server at http://{HOST_URL}:{HOST_PORT}{MCP_PATH}")
-    print(f"Ensure the ADK_BACKEND_URL environment variable in your ADK project is set to this URL.")
+    print(
+        f"Starting Kanvas Custom MCP Server at http://{HOST_URL}:{HOST_PORT}{MCP_PATH}"
+    )
+    print(
+        f"Ensure the ADK_BACKEND_URL environment variable in your ADK project is set to this URL."
+    )
 
     mcp.run(
         transport="streamable-http",
         host=HOST_URL,
         port=HOST_PORT,
         path=MCP_PATH,
-        log_level="debug"
+        log_level="debug",
     )

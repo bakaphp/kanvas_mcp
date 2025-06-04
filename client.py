@@ -59,13 +59,13 @@ async def create_event(
         result = await client.call_tool(
             "create_event",
             {
-            "name": name,
-            "description": description,
-            "category_id": category_id,
-            "type_id": type_id,
-            "date": date,
-            "start_time": start_time,
-            "end_time": end_time,
+                "name": name,
+                "description": description,
+                "category_id": category_id,
+                "type_id": type_id,
+                "date": date,
+                "start_time": start_time,
+                "end_time": end_time,
             },
         )
         try:
