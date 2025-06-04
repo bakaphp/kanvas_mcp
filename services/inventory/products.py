@@ -41,6 +41,4 @@ def search_products(name: str) -> str:
     print(f"{data}")
     exit()
 
-    return json.dumps(
-        {"products": data}
-    )
+    return json.dumps({"products": data})

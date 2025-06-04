@@ -63,9 +63,7 @@ def create_event(
 
     response = RequestsUtil.post(payload=payload)
     data = response.json()
-    return json.dumps(
-        data
-    )
+    return json.dumps(data)
 
 
 def list_events() -> str:

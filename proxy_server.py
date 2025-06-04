@@ -5,7 +5,7 @@ config = {
     "mcpServers": {
         "kanvas": {  # For single server configs, 'default' is commonly used
             "url": "http://localhost/mcp",
-            "transport": "streamable-http"
+            "transport": "streamable-http",
         }
     }
 }
